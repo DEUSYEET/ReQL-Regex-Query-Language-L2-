@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TableMakerTest {
     TableMaker tableMaker;
+    String tableString = "CREATE TABLE 'appointments' (patient_name,doctor_name,apt_date,apt_time,topic): line format /(\\w*);(\\w*);([^ ]*);([^ ]*);(.*$) /file 'C:/appts.txt';";
 
     @BeforeEach
     void setUp() {
@@ -29,8 +30,6 @@ class TableMakerTest {
 
     @Test
     void IsolateColumnNamesFromString() {
-        String tableString = "CREATE TABLE 'appointments' (patient_name,doctor_name,apt_date,apt_time,topic): line format /(\\w*);(\\w*);([^ ]*);([^ ]*);(.*$) /file 'C:/appts.txt';";
-
         List<String> columns = new ArrayList<>();
         columns.add("patient_name");
         columns.add("doctor_name");
@@ -43,6 +42,15 @@ class TableMakerTest {
 
         assertTrue(columns.containsAll(result));
     }
+    @Test
+    void IsolateTableName(){
 
+        String expected = "appointments";
+
+        String result = tableMaker.IsolateName(tableString);
+
+        assertEquals(expected,result);
+
+    }
 
 }

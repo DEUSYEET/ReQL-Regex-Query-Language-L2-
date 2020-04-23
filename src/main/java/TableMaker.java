@@ -15,6 +15,23 @@ public class TableMaker {
 
         return null;
     }
+    public boolean VerifyString(String tableString) {
+        Pattern p = Pattern.compile("(CREATE TABLE ')([A-Za-z][A-Za-z0-9]+)(' \\()(\\w+[,]?)+(\\): line format \\/)(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)(;| ))+(\\/file '[\\w:\\/\\\\.]+';)");
+        Matcher matcher = p.matcher(tableString);
+        return matcher.matches();
+    }
+
+
+    public  String IsolateName(String tableString){
+        Pattern p = Pattern.compile("('[A-Za-z][A-Za-z0-9]+')");
+        Matcher matcher = p.matcher(tableString);
+        String name = "";
+        if (matcher.find()){
+            name=matcher.group().replace("'","");
+        }
+        return name;
+    }
+
 
     public List<String> IsolateColumns(String tableString) {
         Pattern p = Pattern.compile("(' \\()(\\w+[,]?)+(\\))");
@@ -38,11 +55,6 @@ public class TableMaker {
         return columnsList;
     }
 
-    public boolean VerifyString(String tableString) {
-        Pattern p = Pattern.compile("(CREATE TABLE ')([A-Za-z][A-Za-z0-9]+)(' \\()(\\w+[,]?)+(\\): line format \\/)(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)(;| ))+(\\/file '[\\w:\\/\\\\.]+';)");
-        Matcher matcher = p.matcher(tableString);
-        return matcher.matches();
-    }
 
 
 }

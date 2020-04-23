@@ -10,8 +10,8 @@ public class TableMaker {
     public Table CreateTable(String tableString) {
         String name = IsolateName(tableString);
         Map<String, String> patternMap = GetPatterns(tableString);
-//        return new Table(patternMap);
-        return null;
+        String file = IsolateFilePath(tableString);
+        return new Table(name,file,patternMap);
     }
 
     public Map<String, String> GetPatterns(String tableString) {

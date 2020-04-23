@@ -86,11 +86,15 @@ class TableMakerTest {
     }
 
 
-//    @Test
-//    void GetTable(){
-//        Table t = tableMaker.CreateTable(tableString);
-//
-//        System.out.println(t.toString());
-//    }
+    @Test
+    void GetTable(){
+        Table t = tableMaker.CreateTable(tableString);
+        String nameExpected = "appointments";
+        String fileExpected = "C:/appts.txt";
+
+        assertEquals(nameExpected, t.getName());
+        assertEquals(fileExpected, t.getFilePath());
+        System.out.println(t.getPatterns());
+    }
 
 }

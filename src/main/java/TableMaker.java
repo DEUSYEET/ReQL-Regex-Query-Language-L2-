@@ -8,7 +8,9 @@ import java.util.regex.Pattern;
 public class TableMaker {
 
     public Table CreateTable(String tableString) {
-
+        String name = IsolateName(tableString);
+        Map<String, String> patternMap = GetPatterns(tableString);
+//        return new Table(patternMap);
         return null;
     }
 
@@ -16,7 +18,6 @@ public class TableMaker {
 
         Map<String, String> patternMap = new HashMap<>();
         if (VerifyString(tableString)) {
-            String name = IsolateName(tableString);
             List<String> columns = IsolateColumns(tableString);
             List<String> patterns = IsolatePatterns(tableString);
 
@@ -24,7 +25,7 @@ public class TableMaker {
                 patternMap.put(columns.get(i), patterns.get(i));
             }
 
-        } else{
+        } else {
             System.out.println("String Invalid");
         }
 
@@ -83,5 +84,19 @@ public class TableMaker {
         return patternsList;
     }
 
+    public String IsolateFilePath(String tableString) {
+        Pattern p = Pattern.compile("(\\/file '[\\w:\\/\\\\.]+';)");
+        Matcher matcher = p.matcher(tableString);
+        String file = "";
+        if (matcher.find()) {
+            String fileString = matcher.group();
+            Pattern filePattern = Pattern.compile("'[\\w:\\/\\\\.]+'");
+            Matcher fileMatcher = filePattern.matcher(fileString);
+            if (fileMatcher.find()) {
+                file = fileMatcher.group().replace("'", "");
+            }
+        }
+        return file;
+    }
 
 }

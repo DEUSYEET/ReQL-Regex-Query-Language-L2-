@@ -30,13 +30,13 @@ class TableMakerTest {
     }
 
     @Test
-    void IsolateTableName(){
+    void IsolateTableName() {
 
         String expected = "appointments";
 
         String result = tableMaker.IsolateName(tableString);
 
-        assertEquals(expected,result);
+        assertEquals(expected, result);
 
     }
 
@@ -56,7 +56,7 @@ class TableMakerTest {
     }
 
     @Test
-    void IsolatePatterns(){
+    void IsolatePatterns() {
         List<String> patterns = new ArrayList<>();
         patterns.add("(\\w*)");
         patterns.add("(\\w*)");
@@ -70,10 +70,27 @@ class TableMakerTest {
     }
 
     @Test
-    void GetPatternsMap(){
+    void GetPatternsMap() {
         Map<String, String> patterns = tableMaker.GetPatterns(tableString);
 
         System.out.println(patterns);
     }
+
+    @Test
+    void GetFilePath() {
+        String expected = "C:/appts.txt";
+
+        String result = tableMaker.IsolateFilePath(tableString);
+
+        assertEquals(expected, result);
+    }
+
+
+//    @Test
+//    void GetTable(){
+//        Table t = tableMaker.CreateTable(tableString);
+//
+//        System.out.println(t.toString());
+//    }
 
 }

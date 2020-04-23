@@ -29,6 +29,17 @@ class TableMakerTest {
     }
 
     @Test
+    void IsolateTableName(){
+
+        String expected = "appointments";
+
+        String result = tableMaker.IsolateName(tableString);
+
+        assertEquals(expected,result);
+
+    }
+
+    @Test
     void IsolateColumnNamesFromString() {
         List<String> columns = new ArrayList<>();
         columns.add("patient_name");
@@ -40,17 +51,22 @@ class TableMakerTest {
         List<String> result = tableMaker.IsolateColumns(tableString);
 
 
-        assertTrue(columns.containsAll(result));
+        assertTrue(result.containsAll(columns));
     }
+
     @Test
-    void IsolateTableName(){
+    void IsolatePatterns(){
+        List<String> patterns = new ArrayList<>();
+        patterns.add("(\\w*)");
+        patterns.add("(\\w*)");
+        patterns.add("([^ ]*)");
+        patterns.add("([^ ]*)");
+        patterns.add("(.*$)");
 
-        String expected = "appointments";
+        List<String> result = tableMaker.IsolatePatterns(tableString);
 
-        String result = tableMaker.IsolateName(tableString);
-
-        assertEquals(expected,result);
-
+        assertTrue(result.containsAll(patterns));
     }
+
 
 }

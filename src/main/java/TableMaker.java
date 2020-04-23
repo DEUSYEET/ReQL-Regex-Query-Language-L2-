@@ -41,18 +41,30 @@ public class TableMaker {
             String columns = matcher.group();
             Pattern columnPattern = Pattern.compile("(\\w+)+");
             Matcher columnMatcher = columnPattern.matcher(columns);
-
             while (columnMatcher.find()){
                 columnsList.add(columnMatcher.group());
             }
-
-
         } else {
             System.out.println("No Match Found");
         }
-
-
         return columnsList;
+    }
+
+    public List<String> IsolatePatterns(String tableString){
+        Pattern p = Pattern.compile("(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)(;| ))+");
+        Matcher matcher = p.matcher(tableString);
+        List<String> patternsList = new ArrayList<String>();
+        if (matcher.find()) {
+            String patterns = matcher.group();
+            Pattern patternPattern = Pattern.compile("\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)+");
+            Matcher patternMatcher = patternPattern.matcher(patterns);
+            while (patternMatcher.find()){
+                patternsList.add(patternMatcher.group());
+            }
+        } else {
+            System.out.println("No Match Found");
+        }
+        return patternsList;
     }
 
 

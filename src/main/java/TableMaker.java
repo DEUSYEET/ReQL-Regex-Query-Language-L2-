@@ -14,7 +14,7 @@ public class TableMaker {
         return new Table(name,file,patternMap);
     }
 
-    public Map<String, String> GetPatterns(String tableString) {
+    protected Map<String, String> GetPatterns(String tableString) {
 
         Map<String, String> patternMap = new HashMap<>();
         if (VerifyString(tableString)) {
@@ -32,14 +32,14 @@ public class TableMaker {
         return patternMap;
     }
 
-    public boolean VerifyString(String tableString) {
+    protected boolean VerifyString(String tableString) {
         Pattern p = Pattern.compile("(CREATE TABLE ')([A-Za-z][A-Za-z0-9]+)(' \\()(\\w+[,]?)+(\\): line format \\/)(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)(;| ))+(\\/file '[\\w:\\/\\\\.]+';)");
         Matcher matcher = p.matcher(tableString);
         return matcher.matches();
     }
 
 
-    public String IsolateName(String tableString) {
+    protected String IsolateName(String tableString) {
         Pattern p = Pattern.compile("('[A-Za-z][A-Za-z0-9]+')");
         Matcher matcher = p.matcher(tableString);
         String name = "";
@@ -50,7 +50,7 @@ public class TableMaker {
     }
 
 
-    public List<String> IsolateColumns(String tableString) {
+    protected List<String> IsolateColumns(String tableString) {
         Pattern p = Pattern.compile("(' \\()(\\w+[,]?)+(\\))");
         Matcher matcher = p.matcher(tableString);
         List<String> columnsList = new ArrayList<String>();
@@ -67,7 +67,7 @@ public class TableMaker {
         return columnsList;
     }
 
-    public List<String> IsolatePatterns(String tableString) {
+    protected List<String> IsolatePatterns(String tableString) {
         Pattern p = Pattern.compile("(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)(;| ))+");
         Matcher matcher = p.matcher(tableString);
         List<String> patternsList = new ArrayList<String>();
@@ -84,7 +84,7 @@ public class TableMaker {
         return patternsList;
     }
 
-    public String IsolateFilePath(String tableString) {
+    protected String IsolateFilePath(String tableString) {
         Pattern p = Pattern.compile("(\\/file '[\\w:\\/\\\\.]+';)");
         Matcher matcher = p.matcher(tableString);
         String file = "";

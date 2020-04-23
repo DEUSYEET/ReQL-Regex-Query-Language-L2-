@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,5 +69,11 @@ class TableMakerTest {
         assertTrue(result.containsAll(patterns));
     }
 
+    @Test
+    void GetPatternsMap(){
+        Map<String, String> patterns = tableMaker.GetPatterns(tableString);
+
+        System.out.println(patterns);
+    }
 
 }

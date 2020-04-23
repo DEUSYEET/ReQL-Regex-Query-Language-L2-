@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -13,8 +14,23 @@ public class TableMaker {
 
     public Map<String, String> GetPatterns(String tableString) {
 
-        return null;
+        Map<String, String> patternMap = new HashMap<>();
+        if (VerifyString(tableString)) {
+            String name = IsolateName(tableString);
+            List<String> columns = IsolateColumns(tableString);
+            List<String> patterns = IsolatePatterns(tableString);
+
+            for (int i = 0; i < columns.size(); i++) {
+                patternMap.put(columns.get(i), patterns.get(i));
+            }
+
+        } else{
+            System.out.println("String Invalid");
+        }
+
+        return patternMap;
     }
+
     public boolean VerifyString(String tableString) {
         Pattern p = Pattern.compile("(CREATE TABLE ')([A-Za-z][A-Za-z0-9]+)(' \\()(\\w+[,]?)+(\\): line format \\/)(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)(;| ))+(\\/file '[\\w:\\/\\\\.]+';)");
         Matcher matcher = p.matcher(tableString);
@@ -22,12 +38,12 @@ public class TableMaker {
     }
 
 
-    public  String IsolateName(String tableString){
+    public String IsolateName(String tableString) {
         Pattern p = Pattern.compile("('[A-Za-z][A-Za-z0-9]+')");
         Matcher matcher = p.matcher(tableString);
         String name = "";
-        if (matcher.find()){
-            name=matcher.group().replace("'","");
+        if (matcher.find()) {
+            name = matcher.group().replace("'", "");
         }
         return name;
     }
@@ -41,7 +57,7 @@ public class TableMaker {
             String columns = matcher.group();
             Pattern columnPattern = Pattern.compile("(\\w+)+");
             Matcher columnMatcher = columnPattern.matcher(columns);
-            while (columnMatcher.find()){
+            while (columnMatcher.find()) {
                 columnsList.add(columnMatcher.group());
             }
         } else {
@@ -50,7 +66,7 @@ public class TableMaker {
         return columnsList;
     }
 
-    public List<String> IsolatePatterns(String tableString){
+    public List<String> IsolatePatterns(String tableString) {
         Pattern p = Pattern.compile("(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)(;| ))+");
         Matcher matcher = p.matcher(tableString);
         List<String> patternsList = new ArrayList<String>();
@@ -58,7 +74,7 @@ public class TableMaker {
             String patterns = matcher.group();
             Pattern patternPattern = Pattern.compile("\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$]+\\)+");
             Matcher patternMatcher = patternPattern.matcher(patterns);
-            while (patternMatcher.find()){
+            while (patternMatcher.find()) {
                 patternsList.add(patternMatcher.group());
             }
         } else {
@@ -66,7 +82,6 @@ public class TableMaker {
         }
         return patternsList;
     }
-
 
 
 }

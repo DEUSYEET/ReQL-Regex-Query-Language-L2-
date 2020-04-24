@@ -64,5 +64,19 @@ class TableReaderTest {
         System.out.println(data);
     }
 
+    @Test
+    void FilterDataBasedOffOfEquals(){
+        List<Map<String,String>> data = tableReader.ReadIn(t.getFilePath(), t.getPatterns());
+        Map<String,String> statement = tableReader.IsolateStatement(readString);
+        List<String> columns = tableReader.IsolateColumns(readString);
+
+
+        List<Map<String,String>> results = tableReader.FilterData(data, columns, statement);
+
+        System.out.println(results);
+
+        assertEquals(results.size(),1);
+        assertEquals(results.get(0).get("patient_name"),"Selena Gomez");
+    }
 
 }

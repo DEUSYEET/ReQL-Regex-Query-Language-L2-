@@ -27,7 +27,7 @@ public class TableMaker {
                 String pattern = patterns.get(i);
                 String column = columns.get(i);
                 patternMap.put(column, pattern );
-                System.out.println(patternMap);
+//                System.out.println(patternMap);
             }
         return patternMap;
     }

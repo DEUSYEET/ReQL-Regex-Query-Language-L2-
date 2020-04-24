@@ -5,28 +5,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TableReader {
-    private List<Map<String,String>> rows = new ArrayList<>();
+    private List<Map<String, String>> rows = new ArrayList<>();
 
 
-    public void ReadTable(String readString){
-
-    }
-    private String FilterData(String operator, String Condition){
-
-        return null;
-    }
-
-    private void DisplayData(String data){
+    public void ReadTable(String readString) {
 
     }
 
-    protected boolean VerifyString(String readString){
+    private void DisplayData(String data) {
+
+    }
+
+    protected boolean VerifyString(String readString) {
         Pattern p = Pattern.compile("(SELECT )(\\w+,? )+(FROM [A-Za-z][A-Za-z0-9]+ )(WHERE )(\\w+,?( => | = | < | <= | > | >= ))(.+)");
         Matcher matcher = p.matcher(readString);
         return matcher.matches();
     }
 
-    protected String IsolateName(String read){
+    protected String IsolateName(String read) {
         Pattern p = Pattern.compile("(FROM [A-Za-z][A-Za-z0-9]+)");
         Matcher matcher = p.matcher(read);
         String name = "";
@@ -45,7 +41,7 @@ public class TableReader {
             Pattern columnPattern = Pattern.compile("[^SELECT](\\w+,?)+[^FROM]");
             Matcher columnMatcher = columnPattern.matcher(columns);
             while (columnMatcher.find()) {
-                columnsList.add(columnMatcher.group().replace(" ","").replace(",",""));
+                columnsList.add(columnMatcher.group().replace(" ", "").replace(",", ""));
             }
         } else {
             System.out.println("No Match Found");
@@ -53,51 +49,87 @@ public class TableReader {
         return columnsList;
     }
 
-    protected Map<String, String> IsolateStatement(String read){
+    protected Map<String, String> IsolateStatement(String read) {
         Pattern p = Pattern.compile("(WHERE )(\\w+,?)( => | = | < | <= | > | >= )('.+)");
         Matcher matcher = p.matcher(read);
-        Map<String,String> statement = new HashMap<>();
+        Map<String, String> statement = new HashMap<>();
 
-        if(matcher.find()){
+        if (matcher.find()) {
             statement.put("column", matcher.group(2));
-            statement.put("operator", matcher.group(3).replace(" ",""));
-            statement.put("condition", matcher.group(4).replace("'",""));
+            statement.put("operator", matcher.group(3).replace(" ", ""));
+            statement.put("condition", matcher.group(4).replace("'", ""));
         }
 
         return statement;
     }
 
-    protected List<Map<String,String>> ReadIn(String filePath, Map<String,String> patterns){
-        List<Map<String,String>> rows = new ArrayList<>();
+    protected List<Map<String, String>> ReadIn(String filePath, Map<String, String> patterns) {
+        List<Map<String, String>> rows = new ArrayList<>();
         File file = new File(filePath);
         Set<String> keys = patterns.keySet();
         int index = 0;
         try {
             Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 //Separate line by the semicolon ;
                 String[] lineSections = line.split(";");
                 //Check each section against regex
-                Map<String,String> row = new LinkedHashMap<>();
+                Map<String, String> row = new LinkedHashMap<>();
                 for (String key : keys) {
                     Pattern p = Pattern.compile(patterns.get(key));
                     Matcher m = p.matcher(lineSections[index]);
-                //Add to data row
-                    if (m.matches()){
-                        row.put(key,lineSections[index]);
+                    //Add to data row
+                    if (m.matches()) {
+                        row.put(key, lineSections[index]);
                     } else {
-                        row.put(key,"Invalid Data");
+                        row.put(key, "Invalid Data");
                     }
                     index++;
                 }
                 rows.add(row);
-                index=0;
+                index = 0;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return rows;
+    }
+
+    public List<Map<String, String>> FilterData(List<Map<String, String>> data, List<String> columns, Map<String, String> statement) {
+        List<Map<String, String>> results = new ArrayList<>();
+        String operator = statement.get("operator");
+        String column = statement.get("column");
+        String condition = statement.get("condition");
+
+        for (Map<String, String> row : data) {
+            switch (operator) {
+                case "=":
+                    System.out.println(row.get(column));
+                    System.out.println(condition);
+                    if (row.get(column).equals(condition)) {
+                        Map<String, String> resultRow = new LinkedHashMap<>();
+                        for (String selectedColumn : columns) {
+                            resultRow.put(selectedColumn, row.get(selectedColumn));
+                        }
+                        results.add(resultRow);
+                    }
+                    break;
+                case ">=":
+                    break;
+                case "<=":
+                    break;
+                case ">":
+                    break;
+                case "<":
+                    break;
+            }
+
+
+        }
+
+
+        return results;
     }
 
 

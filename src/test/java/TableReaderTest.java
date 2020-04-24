@@ -79,18 +79,29 @@ class TableReaderTest {
         assertEquals(results.get(0).get("patient_name"),"Selena Gomez");
     }
     @Test
-    void FilterData(){
+    void FilterData() {
         String readString = "SELECT patient_name, topic, doctor_name FROM appointments WHERE apt_date >= '3/1/2020'";
-        List<Map<String,String>> data = tableReader.ReadIn(t.getFilePath(), t.getPatterns());
-        Map<String,String> statement = tableReader.IsolateStatement(readString);
+        List<Map<String, String>> data = tableReader.ReadIn(t.getFilePath(), t.getPatterns());
+        Map<String, String> statement = tableReader.IsolateStatement(readString);
         List<String> columns = tableReader.IsolateColumns(readString);
 
 
-        List<Map<String,String>> results = tableReader.FilterData(data, columns, statement);
+        List<Map<String, String>> results = tableReader.FilterData(data, columns, statement);
 
         System.out.println(results);
     }
 
+    @Test
+    void DisplayData(){
+        String readString = "SELECT patient_name, topic, doctor_name FROM appointments WHERE apt_date > '1'";
+
+        List<Map<String, String>> data = tableReader.ReadIn(t.getFilePath(), t.getPatterns());
+        Map<String, String> statement = tableReader.IsolateStatement(readString);
+        List<String> columns = tableReader.IsolateColumns(readString);
+        List<Map<String, String>> results = tableReader.FilterData(data, columns, statement);
+
+        tableReader.DisplayData(results);
+    }
 
 
 

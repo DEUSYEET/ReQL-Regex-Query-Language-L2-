@@ -12,9 +12,6 @@ public class TableReader {
 
     }
 
-    private void DisplayData(String data) {
-
-    }
 
     protected boolean VerifyString(String readString) {
         Pattern p = Pattern.compile("(SELECT )(\\w+,? )+(FROM [A-Za-z][A-Za-z0-9]+ )(WHERE )(\\w+,?( => | = | < | <= | > | >= ))(.+)");
@@ -157,4 +154,38 @@ public class TableReader {
     }
 
 
+    public void DisplayData(List<Map<String, String>> results) {
+        Set<String> columns = results.get(0).keySet();
+        int width = (20);
+        int totalWidth = (20*columns.size());
+        for (String s : columns) {
+            System.out.print(s);
+            for (int i = 0; i < (width-s.length()); i++) {
+                System.out.print(" ");
+            }
+        }
+        System.out.println();
+        for (int i = 0; i < totalWidth; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+        for (Map<String, String> m: results) {
+            System.out.println();
+            for (String s : columns) {
+                System.out.print(m.get(s));
+
+                for (int i = 0; i < ((width-m.get(s).length()-1)/2); i++) {
+                    System.out.print(" ");
+                }
+                    System.out.print(":");
+                for (int i = 0; i < ((width-m.get(s).length())/2); i++) {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+            for (int i = 0; i < totalWidth; i++) {
+                System.out.print(".");
+            }
+        }
+    }
 }

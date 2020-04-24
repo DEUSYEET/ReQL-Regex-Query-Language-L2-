@@ -105,8 +105,6 @@ public class TableReader {
         for (Map<String, String> row : data) {
             switch (operator) {
                 case "=":
-                    System.out.println(row.get(column));
-                    System.out.println(condition);
                     if (row.get(column).equals(condition)) {
                         Map<String, String> resultRow = new LinkedHashMap<>();
                         for (String selectedColumn : columns) {
@@ -116,19 +114,45 @@ public class TableReader {
                     }
                     break;
                 case ">=":
+                    if (row.get(column).compareTo(condition)>=0) {
+                        Map<String, String> resultRow = new LinkedHashMap<>();
+                        for (String selectedColumn : columns) {
+                            resultRow.put(selectedColumn, row.get(selectedColumn));
+                        }
+                        results.add(resultRow);
+                    }
                     break;
                 case "<=":
+                    if (row.get(column).compareTo(condition)<=0) {
+                        Map<String, String> resultRow = new LinkedHashMap<>();
+                        for (String selectedColumn : columns) {
+                            resultRow.put(selectedColumn, row.get(selectedColumn));
+                        }
+                        results.add(resultRow);
+                    }
                     break;
                 case ">":
+                    if (row.get(column).compareTo(condition)>0) {
+                        Map<String, String> resultRow = new LinkedHashMap<>();
+                        for (String selectedColumn : columns) {
+                            resultRow.put(selectedColumn, row.get(selectedColumn));
+                        }
+                        results.add(resultRow);
+                    }
                     break;
                 case "<":
+                    if (row.get(column).compareTo(condition)<0) {
+                        Map<String, String> resultRow = new LinkedHashMap<>();
+                        for (String selectedColumn : columns) {
+                            resultRow.put(selectedColumn, row.get(selectedColumn));
+                        }
+                        results.add(resultRow);
+                    }
                     break;
             }
 
 
         }
-
-
         return results;
     }
 

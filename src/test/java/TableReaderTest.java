@@ -21,7 +21,7 @@ class TableReaderTest {
 
     @Test
     void VerifyString(){
-      boolean valid =  tableReader.VerifyString(readString);
+      boolean valid =  tableReader.VerifyString(readString,t);
 
       assertTrue(valid);
     }

@@ -9,7 +9,7 @@ public class TableReader {
 
 
     public void ReadTable(String readString ,Table t) {
-        if(VerifyString(readString)){
+        if(VerifyString(readString, t)){
             try{
         List<Map<String, String>> data = ReadIn(t.getFilePath(), t.getPatterns());
         Map<String, String> statement = IsolateStatement(readString);
@@ -20,17 +20,22 @@ public class TableReader {
             } catch (IndexOutOfBoundsException e){
                 System.out.println("File Invalid");
             }
-//            catch (ArrayIndexOutOfBoundsException e){
-//                System.out.println("File Invalid");
-//            }
+            catch (NullPointerException e){
+                System.out.println("Query Failed");
+            }
         }
     }
 
 
-    protected boolean VerifyString(String readString) {
+    protected boolean VerifyString(String readString, Table t) {
         Pattern p = Pattern.compile("(SELECT )(\\w+,? )+(FROM [A-Za-z][A-Za-z0-9]+ )(WHERE )(\\w+,?( => | = | < | <= | > | >= ))(.+)");
         Matcher matcher = p.matcher(readString);
-        return matcher.matches();
+        boolean matches = matcher.matches();
+        if (!IsolateName(readString).equals(t.getName())){
+            System.out.println("Table not found");
+            matches = false;
+        }
+        return matches;
     }
 
     protected String IsolateName(String read) {

@@ -23,7 +23,7 @@ public class Controller {
                     System.out.println("Query Table");
                     System.out.println("Format:  SELECT <col-names> FROM <table-name> WHERE <criteria>");
                     readString = bufferedReader.readLine();
-                } while (!tableReader.VerifyString(readString));
+                } while (!tableReader.VerifyString(readString,t));
                 tableReader.ReadTable(readString, t);
 
                 System.out.println("Continue? [y/n]");

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,35 +8,49 @@ public class TableMaker {
     public Table CreateTable(String tableString) {
 
         if (VerifyString(tableString)) {
-        String name = IsolateName(tableString);
-        Map<String, String> patternMap = GetPatterns(tableString);
-        String file = IsolateFilePath(tableString);
-        return new Table(name,file,patternMap);
-            }     else {
-        System.out.println("String Invalid");
-        return null;
+            String name = IsolateName(tableString);
+            Map<String, String> patternMap = GetPatterns(tableString);
+            String file = IsolateFilePath(tableString);
+            return new Table(name, file, patternMap);
+        } else {
+            System.out.println("String Invalid");
+            return null;
         }
     }
 
     protected Map<String, String> GetPatterns(String tableString) {
 
         Map<String, String> patternMap = new LinkedHashMap<>();
-            List<String> columns = IsolateColumns(tableString);
-            List<String> patterns = IsolatePatterns(tableString);
+        List<String> columns = IsolateColumns(tableString);
+        List<String> patterns = IsolatePatterns(tableString);
 
-            for (int i = 0; i < columns.size(); i++) {
-                String pattern = patterns.get(i);
-                String column = columns.get(i);
-                patternMap.put(column, pattern );
+        for (int i = 0; i < columns.size(); i++) {
+            String pattern = patterns.get(i);
+            String column = columns.get(i);
+            patternMap.put(column, pattern);
 //                System.out.println(patternMap);
-            }
+        }
         return patternMap;
     }
 
     protected boolean VerifyString(String tableString) {
         Pattern p = Pattern.compile("(CREATE TABLE ')([A-Za-z][A-Za-z0-9]+)(' \\()(\\w+[,]?)+(\\): line format \\/)(\\([A-Za-z0-9\\*\\'\\{\\}\\[\\]\\(\\)\\?\\\\\\/ \\.\\^\\$\\+]+\\);?)+( ? \\/file '[\\w:\\/\\\\.\\-]+';)");
         Matcher matcher = p.matcher(tableString);
-        return matcher.matches();
+        boolean matches = matcher.matches();
+
+        if (matches) {
+            if (IsolateColumns(tableString).size() != IsolatePatterns(tableString).size()) {
+                System.out.println("Number of patterns does not equal number of columns");
+                matches = false;
+            }
+            File f = new File(IsolateFilePath(tableString));
+            if (!f.exists()) {
+                System.out.println("File does not exist");
+                matches = false;
+            }
+        }
+
+        return matches;
     }
 
     protected String IsolateName(String tableString) {

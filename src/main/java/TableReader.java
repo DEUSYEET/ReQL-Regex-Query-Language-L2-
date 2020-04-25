@@ -10,11 +10,19 @@ public class TableReader {
 
     public void ReadTable(String readString ,Table t) {
         if(VerifyString(readString)){
+            try{
         List<Map<String, String>> data = ReadIn(t.getFilePath(), t.getPatterns());
         Map<String, String> statement = IsolateStatement(readString);
         List<String> columns = IsolateColumns(readString);
         List<Map<String, String>> results = FilterData(data, columns, statement);
         DisplayData(results);
+
+            } catch (IndexOutOfBoundsException e){
+                System.out.println("File Invalid");
+            }
+//            catch (ArrayIndexOutOfBoundsException e){
+//                System.out.println("File Invalid");
+//            }
         }
     }
 
@@ -160,6 +168,7 @@ public class TableReader {
     }
 
     public void DisplayData(List<Map<String, String>> results) {
+        if(results.size()>0){
         Set<String> columns = results.get(0).keySet();
         int width = (20);
         int totalWidth = (20*columns.size());
@@ -191,6 +200,9 @@ public class TableReader {
                 System.out.print(".");
             }
             System.out.println();
+        }
+        } else {
+            System.out.println("No Results");
         }
     }
 }

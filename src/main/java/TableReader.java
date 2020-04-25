@@ -8,8 +8,14 @@ public class TableReader {
     private List<Map<String, String>> rows = new ArrayList<>();
 
 
-    public void ReadTable(String readString) {
-
+    public void ReadTable(String readString ,Table t) {
+        if(VerifyString(readString)){
+        List<Map<String, String>> data = ReadIn(t.getFilePath(), t.getPatterns());
+        Map<String, String> statement = IsolateStatement(readString);
+        List<String> columns = IsolateColumns(readString);
+        List<Map<String, String>> results = FilterData(data, columns, statement);
+        DisplayData(results);
+        }
     }
 
 
@@ -153,7 +159,6 @@ public class TableReader {
         return results;
     }
 
-
     public void DisplayData(List<Map<String, String>> results) {
         Set<String> columns = results.get(0).keySet();
         int width = (20);
@@ -170,7 +175,6 @@ public class TableReader {
         }
         System.out.println();
         for (Map<String, String> m: results) {
-            System.out.println();
             for (String s : columns) {
                 System.out.print(m.get(s));
 
@@ -186,6 +190,7 @@ public class TableReader {
             for (int i = 0; i < totalWidth; i++) {
                 System.out.print(".");
             }
+            System.out.println();
         }
     }
 }

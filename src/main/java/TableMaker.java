@@ -38,7 +38,6 @@ public class TableMaker {
         return matcher.matches();
     }
 
-
     protected String IsolateName(String tableString) {
         Pattern p = Pattern.compile("('[A-Za-z][A-Za-z0-9]+')");
         Matcher matcher = p.matcher(tableString);
@@ -48,7 +47,6 @@ public class TableMaker {
         }
         return name;
     }
-
 
     protected List<String> IsolateColumns(String tableString) {
         Pattern p = Pattern.compile("(' \\()(\\w+[,]?)+(\\))");
